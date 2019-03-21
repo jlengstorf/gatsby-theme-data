@@ -113,12 +113,12 @@ exports.createResolvers = ({ createResolvers, createNodeId, reporter }) => {
           const postIDs = files.map(file => file.children).flat();
 
           // Grab all the MarkdownRemark nodes that are children of post files.
-          const posts = await context.nodeModel
-            .runQuery({
-              query: { filter: { id: { in: postIDs } } },
-              type: 'MarkdownRemark'
-            })
-            .map(mdToPost);
+          const mdPosts = await context.nodeModel.runQuery({
+            query: { filter: { id: { in: postIDs } } },
+            type: 'MarkdownRemark'
+          });
+
+          const posts = mdPosts.map(mdToPost);
 
           return {
             nodes: posts,
